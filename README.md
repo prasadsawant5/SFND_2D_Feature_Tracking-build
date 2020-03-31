@@ -32,3 +32,67 @@ See the classroom instruction and code comments for more details on each of thes
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./2D_feature_tracking`.
+
+## Benchmark
+
+#### Keypoints in 10 images
+
+| Detectors | Number of Key-points |
+| :-------: | :------------------: |
+| SHITOMASI |        13423         |
+|  HARRIS   |         1737         |
+|   FAST    |        17874         |
+|   BRISK   |        27116         |
+|    ORB    |         5000         |
+|   AKAZE   |        13429         |
+|   SIFT    |        13862         |
+
+
+
+#### Matched keypoints in 10 Images
+
+| Detectors\Descriptors | BRISK |  BRIEF  |      ORB      | FREAK | AKAZE | SIFT |
+| :-------------------: | :---: | :-----: | :-----------: | :---: | :---: | :--: |
+|       SHITOMASI       |  347  | **413** |      398      |  341  |  N/A  | 405  |
+|        HARRIS         |  142  |   206   |      162      |  144  |  N/A  | 163  |
+|         FAST          |  335  |   336   |      332      |  295  |  N/A  | 291  |
+|         BRISK         |  304  |   314   |      266      |  292  |  N/A  | 279  |
+|          ORB          |  346  |   267   |      347      |  327  |  N/A  | 364  |
+|         AKAZE         |  341  |   392   |      345      |  353  |  343  | 348  |
+|         SIFT          |  185  |   249   | Out of Memory |  195  |  N/A  | 294  |
+
+
+
+
+#### Keypoint detection and descriptor extraction time consumption (in ms)
+
+| Detectors\Descriptors |  BRISK  |    BRIEF    |      ORB      |  FREAK  |  AKAZE  |    SIFT    |
+| :-------------------: | :-----: | :---------: | :-----------: | :-----: | :-----: | :--------: |
+|       SHITOMASI       | 98.8398 |   82.6777   |    91.0227    | 328.525 |   N/A   |  180.6775  |
+|        HARRIS         | 106.512 |   96.1124   |    108.656    | 338.423 |   N/A   |  151.436   |
+|         FAST          | 12.7961 | **9.92533** |    12.1023    | 267.232 |   N/A   |  116.5025  |
+|         BRISK         | 262.799 |   257.95    |    262.838    | 510.137 |   N/A   | 337.020527 |
+|          ORB          | 53.0014 |   52.4011   |    58.3677    | 294.063 |   N/A   |  270.4355  |
+|         AKAZE         | 387.531 |   383.136   |    378.456    | 584.215 | 753.823 |  458.371   |
+|         SIFT          | 607.335 |   623.61    | Out of Memory | 805.025 |   N/A   |  1072.55   |
+
+
+
+#### Efficiency (matches/ms)
+
+| Detectors\Descriptors |  BRISK   |    BRIEF    |      ORB      |  FREAK   |  AKAZE   |   SIFT   |
+| :-------------------: | :------: | :---------: | :-----------: | :------: | :------: | :------: |
+|       SHITOMASI       | 3.51073  |   4.9953    |    4.37254    | 1.03797  |   N/A    | 2.24156  |
+|        HARRIS         |  1.3238  |   2.14332   |    1.49094    | 0.425504 |   N/A    | 1.07636  |
+|         FAST          | 21.9598  | **33.8528** |    27.4329    | 1.10391  |   N/A    | 2.49780  |
+|         BRISK         | 1.05023  |   1.21729   |    1.01203    | 0.572395 |   N/A    | 0.827842 |
+|          ORB          | 6.39606  |   5.09532   |    5.94507    | 1.11201  |   N/A    | 1.34597  |
+|         AKAZE         | 0.900572 |   1.02314   |   0.911598    | 0.60423  | 0.455014 | 0.759210 |
+|         SIFT          | 0.330954 |  0.399288   | Out of Memory | 0.242228 |   N/A    | 0.274113 |
+
+
+
+Following are the best detector-descriptor combinations,
+1. FAST + BRIEF
+2. FAST + ORB
+3. FAST + BRISK

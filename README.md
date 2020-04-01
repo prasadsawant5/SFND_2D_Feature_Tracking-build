@@ -33,7 +33,28 @@ See the classroom instruction and code comments for more details on each of thes
 3. Compile: `cmake .. && make`
 4. Run it: `./2D_feature_tracking`.
 
-## Benchmark
+## Rubic
+### MP.1
+The idea is to implement a queue. Would have been easier if we could have used the queue APIs provided by c++. But since the requirement was to introduce a FIFO behavior in a vector, we limited its capacity to the buffer size and blindly pushed element if the size of the vector was less than the buffer size. If the vector was full then we popped the foremost element and moved rest of the elements to one position to the left, thereby creating an empty slot at the end of the vector which gets occupied by the new element.
+
+### MP.2
+A minor change in this implementation was that we introduced Enums as a selector for various detector algorithms on `match2D_Student.cpp` side. Then OpenCV's build-in detector classes were initialized with some parameters and scanned the whole image to detect keypoints. Also, the detection time was logged for performance evaluation. And the total detection time for our input ten images was logged as well at the end of the program.
+
+### MP.3
+For this project, we will focus more on the preceding vehicle, so we set up a certain region of interest around the middle of the whole image. We will only keep the key-point that is in this area to reduce noise and save computation power for following steps.
+
+### MP.4
+Descriptor is a vector of values, which describes the image patch around a keypoint. Similar to step 2, we implement a function to detection descriptors based on the input string. We still use OpenCV build-in descriptors (BRIEF, ORB, FREAK, AKAZE and SIFT) class with default parameters to uniquely identify keypoints. Similar to step 2, we log the descriptor extraction time for performance evaluation.
+
+### MP.5
+User can choose which matching method to use: Brute-force matcher(MAT_BF) or FLANN matcher(MAT_FLANN). Note that we need to convert our image to CV_32F type due to a bug in current OpenCV implementation if we choose FLANN matching.
+
+### MP.6
+Both nearest neighbor (best match) and K nearest neighbors (default k=2) are implemented. For KNN matching, we filter matches using descriptor distance ratio test to remove some outliers. In current implementation, only following match will be accepted:
+
+`knn_match[0].distance < 0.9 * knn_match[1].distance`
+
+### Benchmark (MP.7, MP.8, MP.9)
 
 #### Keypoints in 10 images
 
